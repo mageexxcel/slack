@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="excellence" translate="label" sortOrder="100">
+           <label>excellence</label>
+        </tab>
+        <section id="slack" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+           <class>separator-top</class>
+            <label>slack</label>
+            <tab>excellence</tab>
+            <resource>Excellence_Slack::slack_config</resource>
+            <group id="setting" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+              <label>Slack Setting</label>
+               <field id="clientid" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                   <label>Client Id</label>
+                   <comment><![CDATA[ Generate client id for your slack account from <a target="_blank" href="https://api.slack.com/applications/new" >https://api.slack.com/applications/new</a> for more detail visit our documentation]]></comment>
+              </field>
+               <field id="secretkey" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                   <label>Secret Key</label>
+                   <comment><![CDATA[ Generate client id for your slack account from <a target="_blank" href="https://api.slack.com/applications/new" >https://api.slack.com/applications/new</a> for more detail visit our documentation]]></comment>
+              </field>
+              <field id="token" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                   <label>Slack Token Key</label>
+              </field>
+               <field id="webhook" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                   <label>Add Web Hook Url</label>
+              </field>
+              <field id="connect" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                   <frontend_model>Excellence\Slack\Block\System\Config\Form\Field\Slackconnect</frontend_model>
+              </field>
+             </group>
+             <group id="advance" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                  <label>Slack Advance</label>
+                  <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                 <field id="log" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Slack Log</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+             </group>
+             <group id="notification" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                  <label>Slack Notification</label>
+                  
+                 <field id="channel" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Customer Updates</label>
+                    
+                    <comment> Select your chanel for which you need slack notification.</comment>
+                    <frontend_model>Excellence\Slack\Block\System\Config\Form\Field\Notification</frontend_model>
+                </field>
+                <field id="inventory" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Product Inventory Updates</label>
+                     <comment> Select your chanel for which you need slack notification.</comment>
+                    <frontend_model>Excellence\Slack\Block\System\Config\Form\Field\Inventory</frontend_model>
+                </field>
+             </group>
+        </section>
+    </system>
+</config>
