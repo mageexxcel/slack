@@ -1,0 +1,103 @@
+var tokenvalue = '';
+function token(value) {
+    tokenvalue = value;
+}
+var channelurl = 'https://slack.com/api/channels.list';
+require([
+    "jquery",
+    "jquery/ui",
+    "mage/translate"
+], function(jQuery) {
+  
+    loadChannel();
+
+    /*
+     * Check selected or not (channel)
+     */
+    var checkselect = '';
+    jQuery("#target").submit(function(event) {
+        jQuery(".channellist option:selected").each(function() {
+            var value = jQuery(this).val();
+            checkselect += value;
+        });
+        if (checkselect == '') {
+            if (!jQuery("#createchannel").is(':checked')) {
+                alert(jQuery.mage.__('Assign at least one list'));
+                event.preventDefault();
+            }
+        } else {
+             if (jQuery("#createchannel").is(':checked')) {
+                alert(jQuery.mage.__('Select only one option Select list/ Create channel'));
+                event.preventDefault();
+            }
+        }
+    });
+
+    /*
+     * lists refresh button
+     */
+    jQuery('body').on('click', '#reloadlist' ,function() {
+        jQuery('#own-loading').show();
+        loadChannel();
+    });
+
+    /*
+     * get the list of all chennels of team 
+     * @returns channel list
+     */
+    function loadChannel() {
+        if (tokenvalue == '') {
+            jQuery('#own-loading').hide();
+            jQuery('#slacksetupnotdone').show();
+            jQuery('#finish').hide();
+        } else {
+            jQuery('#own-loading').show();
+            jQuery.ajax({
+                url: channelurl,
+                method: 'get',
+                dataType: "json",
+                data: {token: tokenvalue, scope: 'channels:read', exclude_archived: '1'},
+                async: false,
+                success: function(data) {
+                    var channeldata = data.channels;
+                    var channels = jQuery.map(channeldata, function(el) {
+                        return el;
+                    });
+                    jQuery('.channellist').each(function() {
+                        jQuery(this).find('option:gt(1)').remove();
+                    });
+                    var open_count = 0;
+                    for (var i = 0; i < channels.length; i++) {
+                        jQuery('.channellist').append('<option value=' + channels[i].id + '>' + channels[i].name + '</option>');
+                        open_count++;
+                    }
+                    /*
+                     * selected dropdown list after setupwizard sone
+                     */
+                    jQuery('.selectedlist').each(function() {
+                        var value1 = jQuery(this).val();
+                        if (value1 != '') {
+                            jQuery(this).siblings().each(function() {
+                                var value2 = jQuery(this).val();
+                                if (value1.indexOf(value2) >= 0 || value2.indexOf(value1) >= 0) {
+                                    jQuery(this).attr('selected', true);
+                                }
+
+                            });
+                        }
+
+                    });
+                    jQuery('#own-loading').hide();
+                },
+                error: function(err) {
+                    console.log('Request failed');
+                    jQuery('#own-loading').hide();
+                }
+            })
+        }
+    }
+
+})
+
+
+   

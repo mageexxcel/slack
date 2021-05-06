@@ -1,0 +1,105 @@
+<div  id='slacksetupnotdone' style="display:none">
+    <div id="messages">
+        <div class="messages">
+            <div class="message message-notice notice">
+                <div data-ui-id="messages-message-notice"><?php  echo __('Slack Authentication not done. First go to Stores -> Configuration -> Excellence -> <a href="'.$block->getConfigUrlSlack().'">Slack</a> to complete the authorization') ?></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="loading-mask" id="own-loading" data-role="loader" style="display: none;">
+    <div class="popup popup-loading">
+        <div class="popup-inner">
+            <img src="<?php echo $block->getViewFileUrl('images/loader-2.gif'); ?>" alt="Loading...">
+          <?php  echo __('Please wait...') ?>  
+        </div>
+    </div>
+</div>
+<?php
+$states = $block->statusList();
+$action = $block->getActionUrl();
+$setup = $block->getSetupCollection();
+$first_item_data = $setup->getFirstItem();
+$first_item = $first_item_data->getId();
+$setup_data = $setup->getData();
+?>
+<form  method="POST"  id="target" enctype="multipart/form-data" action="<?php echo $action; ?>"  >
+    <input type="hidden" name="form_key" value="<?php echo $block->getFormKey(); ?>" />
+    <div class="accordion">
+        <div class="entry-edit form-inline">
+            <div class="section-config active">
+                <div class="entry-edit-head admin__collapsible-block">
+                    <span id="setupwizard setting" class="entry-edit-head-link"></span>
+                    <a id="" class="open" href="#"> <?php  echo __('Assign Your Slack Channels To Different Order State') ?>  </a>
+                </div>
+               
+                <input id="" type="hidden" value="1" name="">
+                <fieldset id="slack setup wizard"  class="config admin__collapsible-block">
+                     <input type="button" name="reload" value="Refresh"  id="reloadlist" class="action-default" style="float:right; margin-bottom:20px">
+                     <div id="messages" style="float:left">
+                        <div class="messages">
+                            <div class="message message-notice notice">
+                                <div data-ui-id="messages-message-notice"><?php  echo __('Assign Magento Order States To Your Slack Channels . This helps to efficiently manage your magento orders. Your can also assign all magento orders states to a single Channel. If you have create a new Channel simple press refresh button to make it visible here') ?></div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="form-list" cellspacing="0" style="width:550px; float:left;">
+                        <tbody>
+                            <?php
+                            $i = 0;
+                        
+                            foreach ($states as $key => $value) :
+                                
+                                ?>
+                                <tr id="row_status">
+                                    <td class="label" style="text-align: left; width:200px">
+                                        <label for="helloworld_active_display_scope">
+                                            <span><?php echo $value; ?></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <select class="channellist" name="<?php echo $key; ?>">
+                                            <?php if ($first_item != ''): ?>
+                                                <?php if (($setup_data[$i]['slack_channel_id'] != '') && ($setup_data[$i]['slack_channel_id'] != null)): ?>
+                                                    <option value=""> <?php  echo __('------  Select List ------ ') ?></option>
+                                                    <option value="<?php echo $setup_data[$i]['slack_channel_id']; ?> " class='selectedlist'><?php echo $setup_data[$i]['order_state']; ?></option>
+                                                <?php else: ?>
+                                                    <option value=""> <?php  echo __('------  Select List ------ ') ?></option>
+                                                    <option value="" class='selectedlist'  style='display:none'></option>
+                                                <?php endif; ?>
+                                            <?php else: ?>
+                                                <option value=""><?php  echo __('------  Select List ------ ') ?></option>
+                                                <option value="" class='selectedlist'  style='display:none'></option>
+                                            <?php endif; ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <?php $i++;
+                            endforeach;
+                            ?>
+                            <tr><td><br></td></tr>
+<?php $createChannel = $block->getCreateChannel(); ?>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="createchannel" id="createchannel" value="1" <?php if ($createChannel == 1) echo 'checked' ?> >  <?php  echo __('Create Channel For Every Order In Slack') ?>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td> <input type="submit" id="finish" value="Complete Setup Wizard" class="action-default"></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</form>
+<?php
+$token = $block->getToken();
+?>
+
+<script type="text/javascript">
+    token("<?php echo $token; ?>");
+</script>
