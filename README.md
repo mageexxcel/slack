@@ -9,6 +9,8 @@
 1. Easily Connect your team slack with your magento store
 2. Manage workflow of your store orders with your team and get realtime order updates in slack.
 3. Setup store notification in different slack channels
+4. Required Excellence_Oms module
+
 
 
 ******************************************************************************************************
